@@ -719,10 +719,13 @@ This project uses the **EEG-128channels ERP dataset from Lanzhou** (Lanzhou data
 - **Subjects**: Multiple participants with event-related potential (ERP) recordings
 
 **Where to Access:**
-The dataset can be found at popular EEG repositories:
-- [PhysioNet](https://physionet.org/) - Large collection of biomedical datasets
-- [BNCI Horizon 2020](https://www.bnci-horizon-2020.eu/database) - EEG/BCI datasets
-- [OpenNeuro](https://openneuro.org/) - Public neuroimaging datasets
+The dataset is available on [PhysioNet](https://physionet.org/) - a large, freely accessible collection of biomedical datasets including numerous EEG studies. PhysioNet is maintained by MIT and is the standard repository for open-source physiological signals used in research.
+
+**Understanding the Dataset Structure:**
+
+The Lanzhou EEG dataset follows a standard structure for multi-channel EEG recordings. The **.raw file** contains the actual EEG voltage time series data—128 channels of electrode measurements sampled at 500 Hz. This means for every second of recording, you get 500 data points per channel, representing the electrical activity detected by that electrode. The **.mat file** (MATLAB format) contains the electrode positions and metadata, which specifies the 3D coordinates of each electrode on the scalp using the standard 10-20 system. This spatial information is crucial for our graph-based approach: the algorithm uses these positions to determine which electrodes are anatomically close and should therefore have correlated signals.
+
+When you load the data with V1.py using MNE, the raw binary file is parsed into a structured object where each of the 128 channels is labeled (e.g., "E1", "E2", ..., "E128"), timestamped, and associated with its spatial coordinates. The electrode positions allow the algorithm to construct anatomically meaningful graphs: electrodes in the same brain region (e.g., frontal lobe) are grouped together and connected, while distant electrodes have weaker connections. This is why the dataset structure (positions + signals) directly enables the core innovation of our method—learning local graph structures that respect the brain's actual anatomy.
 
 **Using the Dataset:**
 Update the file paths in `V1.py` to point to your local copy:
