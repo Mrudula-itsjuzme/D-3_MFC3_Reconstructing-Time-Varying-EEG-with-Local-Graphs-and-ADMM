@@ -17,14 +17,154 @@
 
 ## Table of Contents
 
-1. [TL;DR](#tldr-too-long-didnt-read)
-2. [Abstract](#abstract)
-3. [Introduction](#introduction)
-4. [System Overview](#system-overview)
-5. [Detailed Methodology](#detailed-methodology)
-6. [Results & Analysis](#results--analysis)
-7. [Key Contributions](#key-contributions)
-8. [Conclusion](#conclusion)
+1. [Quick Start](#quick-start)
+2. [Installation & Usage](#installation--usage)
+3. [Repository Structure](#repository-structure)
+4. [TL;DR](#tldr-too-long-didnt-read)
+5. [Abstract](#abstract)
+6. [Introduction](#introduction)
+7. [System Overview](#system-overview)
+8. [Detailed Methodology](#detailed-methodology)
+9. [Results & Analysis](#results--analysis)
+10. [Key Contributions](#key-contributions)
+11. [Conclusion](#conclusion)
+
+---
+
+## Quick Start
+
+Get up and running in 5 minutes:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/Mrudula-itsjuzme/EEG-Reconstruction-With-ADMM.git
+cd EEG-Reconstruction-With-ADMM
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Run the implementation
+python V1.py
+```
+
+**What happens:**
+- Loads sample EEG data (128 channels)
+- Runs ADMM reconstruction with local graph smoothness
+- Outputs SNR and NMSE metrics
+- Displays reconstruction visualization
+
+**Expected output:**
+```
+✅ Successfully loaded raw EEG data.
+Extracted a data segment of shape: (128, 256)
+✅ Successfully loaded electrode positions.
+Constructing anatomical graph Laplacians...
+Starting ADMM for 150 iterations...
+  - Iteration 10/150 complete.
+  ...
+--- Performance Metrics ---
+Noisy Signal:      NMSE = 0.0234, SNR = 14.32 dB
+Reconstructed Signal: NMSE = 0.0045, SNR = 23.58 dB
+```
+
+---
+
+## Installation & Usage
+
+### Requirements
+
+- **Python 3.8+**
+- **NumPy** - Numerical computations
+- **SciPy** - Matrix operations and data loading
+- **Matplotlib** - Visualization
+- **MNE-Python** - EEG data handling (optional, for V1.py with real datasets)
+
+### Installation
+
+```bash
+# Using pip
+pip install numpy scipy matplotlib mne
+
+# Or from requirements.txt
+pip install -r requirements.txt
+```
+
+### Usage
+
+**Option 1: V1.py (Full implementation with anatomical graphs)**
+
+```python
+python V1.py
+```
+
+Runs the complete pipeline:
+- Loads real EEG data from .raw format
+- Constructs anatomical graph Laplacians from electrode positions
+- Applies ADMM reconstruction
+- Evaluates SNR and NMSE metrics
+- Displays side-by-side visualization
+
+**Option 2: V2.py (Simplified NumPy-only version)**
+
+```python
+python V2.py
+```
+
+Faster implementation without MNE:
+- Loads raw binary EEG data
+- Uses region-based Laplacians
+- Simulates missing data (50% mask)
+- Saves reconstructed signal to `reconstructed_eeg_window.npy`
+
+### Configuration
+
+Edit parameters in the scripts to customize:
+
+**V1.py:**
+```python
+NOISE_LEVEL = 0.2      # Standard deviation of noise
+LAMBDA_REG = 0.01      # Graph smoothness regularization
+RHO = 0.5              # ADMM penalty parameter
+ITERATIONS = 150       # Number of ADMM iterations
+```
+
+**V2.py:**
+```python
+T_window = 500         # Time window to process
+max_iter = 30          # ADMM iterations per region
+alpha = 0.1            # Nuclear norm weight
+beta = 0.5             # Smoothness weight
+```
+
+---
+
+## Repository Structure
+
+```
+EEG-Reconstruction-With-ADMM/
+├── V1.py                          # Main ADMM implementation (production)
+├── V2.py                          # Simplified ADMM version (research)
+├── requirements.txt               # Python dependencies
+├── README.md                       # This file
+├── images/
+│   ├── Figure1.png                # System architecture pipeline
+│   ├── 1.jpg                      # Reconstruction results at 40% missing
+│   ├── 2.jpg                      # Learned adjacency matrices
+│   └── 3.jpg                      # ADMM vs baseline comparison
+└── MFC_S3/                        # Original project data
+    ├── 1.csv                      # EEG signal samples
+    ├── maths.slx                  # Simulink model
+    └── *.pdf                      # Research papers
+```
+
+**File descriptions:**
+
+| File | Purpose |
+|------|---------|
+| **V1.py** | Production-ready implementation using MNE and anatomical graphs. Use this for real EEG datasets. |
+| **V2.py** | Pure NumPy implementation for rapid prototyping. Includes nuclear norm proximal operator and simplified ADMM. |
+| **requirements.txt** | All Python package dependencies. Run `pip install -r requirements.txt`. |
+| **images/** | Visualization outputs: system architecture, reconstruction results, learned connectivity matrices, and performance comparisons. |
 
 ---
 
