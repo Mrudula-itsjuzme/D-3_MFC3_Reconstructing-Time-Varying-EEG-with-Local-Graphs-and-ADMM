@@ -1,3 +1,4 @@
+
 # Reconstructing Time-Varying EEG with Local Graphs and ADMM
 
 [![Course](https://img.shields.io/badge/Course-22MAT220-blue)](.)
@@ -89,12 +90,6 @@ This work proposes **Local Graph Signal Smoothness (LGS)** for:
 ---
 
 ## System Overview
-
-![System Architecture](images/Figure1.png)
-
-**Figure 1**: Complete pipeline of the proposed LSG-based EEG reconstruction method
-
-The system architecture illustrates the complete pipeline:
 
 ### Signal Model
 
@@ -344,8 +339,6 @@ Typical convergence: 50-200 iterations
 
 ### 1. High-Fidelity Signal Reconstruction
 
-![EEG Reconstruction Results](images/1.jpg)
-
 **Figure 2**: EEG Signal Reconstruction for Channels 10, 50, and 100 at 40% data corruption
 
 **Visual Assessment:**
@@ -403,8 +396,6 @@ Typical convergence: 50-200 iterations
 
 ### 3. Comparative Validation with Baseline
 
-![Validation Comparison](images/3.jpg)
-
 **Figure 3**: Comparative performance: Proposed ADMM method vs. Zero-Filling Baseline
 
 **Performance Metrics Comparison:**
@@ -433,8 +424,6 @@ Typical convergence: 50-200 iterations
    - Temporal smoothness constraints (ensures physical consistency)
 
 ### 4. Learned Graph Topology
-
-![Learned Adjacency Matrices](images/2.jpg)
 
 **Figure 4**: Learned local graph adjacency matrices for all five brain regions
 
@@ -610,17 +599,7 @@ We propose an **LGS-based method** for time-varying EEG reconstruction that:
 
 ---
 
-## License
-
-Academic research at **Amrita Vishwa Vidyapeetham**, School of Artificial Intelligence, Coimbatore Campus
-
-**Course**: 22MAT220 - Mathematics For Computing  
-**Institution**: Amrita Vishwa Vidyapeetham, Coimbatore Campus  
-**Academic Year**: 2025
-
----
-
-**Last Updated**: March 31, 2025
+**Last Updated**: March 31, 2026
 
 **Repository**: [EEG-Reconstruction-With-ADMM](https://github.com/Mrudula-itsjuzme/EEG-Reconstruction-With-ADMM/)
 
