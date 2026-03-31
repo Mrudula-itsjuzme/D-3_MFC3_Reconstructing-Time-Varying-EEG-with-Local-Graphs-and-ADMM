@@ -1,4 +1,3 @@
-
 # Reconstructing Time-Varying EEG with Local Graphs and ADMM
 
 [![Course](https://img.shields.io/badge/Course-22MAT220-blue)](.)
@@ -25,8 +24,7 @@
 5. [Detailed Methodology](#detailed-methodology)
 6. [Results & Analysis](#results--analysis)
 7. [Key Contributions](#key-contributions)
-8. [Applications](#applications)
-9. [Conclusion](#conclusion)
+8. [Conclusion](#conclusion)
 
 ---
 
@@ -551,36 +549,6 @@ This is particularly important clinically: if sensors fail or signals drop out, 
 
 ---
 
-## Applications
-
-### Clinical Diagnostics
-
-- **Artifact Removal**: Remove muscle/movement artifacts while preserving brain signals
-- **Sensor Failure**: Recover signals when electrodes malfunction
-- **Sleep Monitoring**: Maintain signal quality during patient movement
-- **Seizure Detection**: Ensure continuous, clean signal streams for accurate detection
-
-### Brain-Computer Interfaces (BCIs)
-
-- **Robust Signal Acquisition**: Maintain BCI performance despite noisy/incomplete data
-- **Reduced Electrode Count**: Reconstruct missing signals from fewer electrodes (fewer sensors = more comfort)
-- **Portable Systems**: Enable reliable operation in non-laboratory settings with suboptimal conditions
-
-### Neuroscience Research
-
-- **Graph Learning**: Discover functional brain networks from EEG
-- **Connectivity Analysis**: Map brain regions that work together
-- **Pattern Discovery**: Identify disease-specific network disruptions
-- **Group Studies**: Compare brain connectivity across populations
-
-### Wearable Health Monitoring
-
-- **Remote Monitoring**: Recover signal quality in noisy home environments
-- **Battery Efficiency**: Reconstruct sparse measurements to extend device lifetime
-- **Real-Time Processing**: Fast convergence enables on-device inference
-
----
-
 ## Conclusion
 
 This work demonstrates that **joint graph learning and signal reconstruction** effectively recovers missing EEG data while discovering genuine brain connectivity patterns. The approach combines mathematical rigor (ADMM optimization) with neuroscience grounding (anatomical region decomposition and learned graph validation).
@@ -590,12 +558,6 @@ This work demonstrates that **joint graph learning and signal reconstruction** e
 - Extreme robustness (stable at 90% data loss)
 - Anatomically plausible learned graphs
 - Efficient ADMM convergence
-
-**Future directions:**
-- Extension to other neuroimaging modalities (fMRI, MEG)
-- Temporal graph learning for dynamic connectivity
-- Integration with machine learning for disease classification
-- Clinical deployment in hospital EEG systems
 
 The method bridges signal processing theory with neuroscience practice, creating practical tools for improving brain signal acquisition in clinical and research settings.
 
