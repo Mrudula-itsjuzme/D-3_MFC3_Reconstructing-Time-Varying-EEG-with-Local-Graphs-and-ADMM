@@ -1,7 +1,6 @@
+# Reconstructing Time-Varying EEG with Local Graphs and ADMM
 
 ![Amrita Vishwa Vidyapeetham](images/amr.jpeg)
-
-# Reconstructing Time-Varying EEG with Local Graphs and ADMM
 
 [![Course](https://img.shields.io/badge/Course-22MAT220-blue)](.)
 [![Institution](https://img.shields.io/badge/Amrita%20Vishwa%20Vidyapeetham-AI-green)](.)
@@ -30,7 +29,8 @@
 8. [Detailed Methodology](#detailed-methodology)
 9. [Results & Analysis](#results--analysis)
 10. [Key Contributions](#key-contributions)
-11. [Conclusion](#conclusion)
+11. [Dataset](#dataset)
+12. [Conclusion](#conclusion)
 
 ---
 
@@ -704,6 +704,32 @@ This work demonstrates that **joint graph learning and signal reconstruction** e
 - Efficient ADMM convergence
 
 The method bridges signal processing theory with neuroscience practice, creating practical tools for improving brain signal acquisition in clinical and research settings.
+
+---
+
+## Dataset
+
+This project uses the **EEG-128channels ERP dataset from Lanzhou** (Lanzhou dataset: ERP study with 128-channel EEG recordings).
+
+**Dataset Specifications:**
+- **Name**: EEG_128channels_ERP_lanzhou_2015
+- **Channels**: 128 EEG electrodes (standard 10-20 system)
+- **Sampling Rate**: 500 Hz
+- **Format**: .raw binary files with accompanying .mat electrode position files
+- **Subjects**: Multiple participants with event-related potential (ERP) recordings
+
+**Where to Access:**
+The dataset can be found at popular EEG repositories:
+- [PhysioNet](https://physionet.org/) - Large collection of biomedical datasets
+- [BNCI Horizon 2020](https://www.bnci-horizon-2020.eu/database) - EEG/BCI datasets
+- [OpenNeuro](https://openneuro.org/) - Public neuroimaging datasets
+
+**Using the Dataset:**
+Update the file paths in `V1.py` to point to your local copy:
+```python
+raw_file_path = '/path/to/EEG_128channels_ERP_lanzhou_2015/02010002erp_20150416_1131.raw'
+chan_info_path = '/path/to/EEG_128channels_ERP_lanzhou_2015/chan_info_egi_128.mat'
+```
 
 ---
 
