@@ -1,5 +1,7 @@
 # Reconstructing Time-Varying EEG with Local Graphs and ADMM
 
+![Amrita Vishwa Vidyapeetham](images/amr.jpeg)
+
 [![Course](https://img.shields.io/badge/Course-22MAT220-blue)](.)
 [![Institution](https://img.shields.io/badge/Amrita%20Vishwa%20Vidyapeetham-AI-green)](.)
 [![Year](https://img.shields.io/badge/Year-2025-orange)](.)
@@ -147,6 +149,7 @@ EEG-Reconstruction-With-ADMM/
 ├── requirements.txt               # Python dependencies
 ├── README.md                       # This file
 ├── images/
+│   ├── amr.jpeg                   # Amrita Vishwa Vidyapeetham logo
 │   ├── Figure1.png                # System architecture pipeline
 │   ├── 1.jpg                      # Reconstruction results at 40% missing
 │   ├── 2.jpg                      # Learned adjacency matrices
@@ -164,7 +167,7 @@ EEG-Reconstruction-With-ADMM/
 | **V1.py** | Production-ready implementation using MNE and anatomical graphs. Use this for real EEG datasets. |
 | **V2.py** | Pure NumPy implementation for rapid prototyping. Includes nuclear norm proximal operator and simplified ADMM. |
 | **requirements.txt** | All Python package dependencies. Run `pip install -r requirements.txt`. |
-| **images/** | Visualization outputs: system architecture, reconstruction results, learned connectivity matrices, and performance comparisons. |
+| **images/** | Visualization outputs: institution logo, system architecture, reconstruction results, learned connectivity matrices, and performance comparisons. |
 
 ---
 
