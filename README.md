@@ -91,6 +91,10 @@ This work proposes **Local Graph Signal Smoothness (LGS)** for:
 
 ## System Overview
 
+![System Architecture](images/Figure1.png)
+
+**Figure 1**: Complete pipeline of the proposed LGS-based EEG reconstruction method
+
 ### Signal Model
 
 The incomplete EEG signals captured by electrodes are modeled as:
@@ -122,7 +126,7 @@ Each region exhibits correlated behavior due to:
 - Anatomical proximity of neurons
 - Functional specialization and task-related activity
 - Synchronized oscillations across functional networks
-- Interhemispheric and interhemispheric communication
+- Interhemispheric and intrahemispheric communication
 
 This regional organization enables region-specific graph learning with improved reconstruction.
 
@@ -280,10 +284,10 @@ end for
 
 Given fixed $\tilde{X}_k^{(c-1)}$, solve:
 
-$$L_k^{(c)} = \arg\min_{L_k \in \mathcal{L}} \text{Tr}(Z_k L_k Z_k^{\top}) + \alpha\|L_k\|_F^2 + \langle \Lambda_1^{(c-1)}, L_k \rangle + \frac{\rho_1}{2}\|L_k - L_k^{\text{proj}}\|_F^2$$
+$$L_k^{(c)} = \arg\min_{L_k \in \mathcal{L}} \text{Tr}(Z_k L_k Z_k^{\top}) + \alpha\|L_k\|_F^2 + \left\langle \Lambda_1^{(c-1)}, L_k \right\rangle + \frac{\rho_1}{2}\|L_k - L_k^{\text{proj}}\|_F^2$$
 
 **Solution approach:**
-- Vectorize upper-triangular and diagonal elements: $\text{vec}(uL_k), \text{vec}(dL_k)$
+- Vectorize upper-triangular and diagonal elements
 - Reduces from $N_k^2$ to $N_k(N_k+1)/2$ variables
 - Apply constrained least-squares optimization
 - Enforce non-negativity constraints via projected gradient descent
@@ -295,7 +299,7 @@ $$L_k^{(c)} = \arg\min_{L_k \in \mathcal{L}} \text{Tr}(Z_k L_k Z_k^{\top}) + \al
 
 Given fixed $L_k^{(c)}$, solve:
 
-$$\tilde{X}_k^{(c)} = \arg\min_{\tilde{X}_k} \beta\|\tilde{X}_k\|_* + \gamma\|J_k \odot \tilde{X}_k - X_k^{\text{obs}}\|_F^2 + \langle \Lambda_2^{(c-1)}, \tilde{X}_k \rangle + \frac{\rho_2}{2}\|\tilde{X}_k - \tilde{X}_k^{\text{proj}}\|_F^2$$
+$$\tilde{X}_k^{(c)} = \arg\min_{\tilde{X}_k} \beta\|\tilde{X}_k\|_* + \gamma\|J_k \odot \tilde{X}_k - X_k^{\text{obs}}\|_F^2 + \left\langle \Lambda_2^{(c-1)}, \tilde{X}_k \right\rangle + \frac{\rho_2}{2}\|\tilde{X}_k - \tilde{X}_k^{\text{proj}}\|_F^2$$
 
 **Solution via Singular Value Thresholding (SVT):**
 
@@ -321,9 +325,9 @@ Dual variables track constraint violations and guide convergence.
 
 Stop iterations when:
 
-$$\text{Primal residual}: \|L_k^{(c)} - L_k^{(c-1)}\|_F \leq \epsilon_{\text{pri}}$$
-$$\text{Dual residual}: \|\nabla_L \mathcal{L}\|_F \leq \epsilon_{\text{dual}}$$
-$$\text{Relative change}: \frac{|\mathcal{L}^{(c)} - \mathcal{L}^{(c-1)}|}{|\mathcal{L}^{(c-1)}|} \leq 10^{-4}$$
+$$\text{Primal residual}: \left\|L_k^{(c)} - L_k^{(c-1)}\right\|_F \leq \epsilon_{\text{pri}}$$
+$$\text{Dual residual}: \left\|\nabla_L \mathcal{L}\right\|_F \leq \epsilon_{\text{dual}}$$
+$$\text{Relative change}: \frac{\left|\mathcal{L}^{(c)} - \mathcal{L}^{(c-1)}\right|}{\left|\mathcal{L}^{(c-1)}\right|} \leq 10^{-4}$$
 
 Typical convergence: 50-200 iterations
 
@@ -338,6 +342,8 @@ Typical convergence: 50-200 iterations
 ## Results & Analysis
 
 ### 1. High-Fidelity Signal Reconstruction
+
+![EEG Reconstruction Results](images/1.jpg)
 
 **Figure 2**: EEG Signal Reconstruction for Channels 10, 50, and 100 at 40% data corruption
 
@@ -396,6 +402,8 @@ Typical convergence: 50-200 iterations
 
 ### 3. Comparative Validation with Baseline
 
+![Validation Comparison](images/3.jpg)
+
 **Figure 3**: Comparative performance: Proposed ADMM method vs. Zero-Filling Baseline
 
 **Performance Metrics Comparison:**
@@ -424,6 +432,8 @@ Typical convergence: 50-200 iterations
    - Temporal smoothness constraints (ensures physical consistency)
 
 ### 4. Learned Graph Topology
+
+![Learned Adjacency Matrices](images/2.jpg)
 
 **Figure 4**: Learned local graph adjacency matrices for all five brain regions
 
@@ -510,6 +520,38 @@ Typical convergence: 50-200 iterations
 
 ---
 
+## Applications
+
+### Medical & Clinical
+
+**Diagnostic Applications:**
+- **Epilepsy Detection**: Reconstruct corrupted ictal/interictal recordings for accurate diagnosis
+- **Sleep Stage Classification**: Improve sleep study analysis with reconstructed signals
+- **Neurological Disorder Assessment**: Better detection of abnormal EEG patterns in:
+  - Stroke patients
+  - Traumatic brain injury (TBI)
+  - Dementia and Alzheimer's disease
+  - Brain tumors
+
+**Clinical Monitoring:**
+- **ICU Monitoring**: Continuous patient assessment despite electrode loss or artifact
+- **Perioperative Monitoring**: Enhanced signal quality during anesthesia
+- **Ambulatory EEG**: Improve reliability of home-based monitoring systems
+
+### Research Applications
+
+- **Brain Connectivity Studies**: Improved fidelity for functional/structural connectivity analysis
+- **Neuroscience Research**: Better understanding of brain oscillations and neural synchronization
+- **Clinical Trials**: More reliable EEG endpoints in pharmaceutical research
+
+### Engineering Applications
+
+- **Brain-Computer Interfaces (BCIs)**: Enhanced signal quality for improved control
+- **Seizure Prediction**: Better feature extraction from reconstructed signals
+- **Artifact Removal**: Selective artifact suppression while preserving neural activity
+
+---
+
 ## Conclusion
 
 ### Summary
@@ -521,14 +563,43 @@ We propose an **LGS-based method** for time-varying EEG reconstruction that:
 3. **Uses Efficient ADMM**: Handles non-convex optimization with practical convergence
 4. **Achieves Superior Results**: ~65% error reduction with robust performance at extreme data loss
 
+### Key Advantages
+
+✅ **Anatomically Motivated**: Respects functional brain organization and neural correlations
+
+✅ **Simultaneous Optimization**: Graph learning dramatically improves reconstruction
+
+✅ **Extreme Robustness**: Maintains 9.34 dB SNR even with 90% missing data
+
+✅ **Computationally Efficient**: ADMM convergence enables practical implementation
+
+✅ **Interpretable Results**: Learned graphs provide neuroscience insights and clinical context
+
+✅ **Clinically Relevant**: Directly applicable to real EEG systems and diagnostic workflows
+
+✅ **Data-Driven**: No manual parameter tuning; learning from data itself
+
+### Future Research Directions
+
+- Clinical validation on diverse patient populations and pathologies
+- Real-time implementation for clinical decision support systems
+- Multi-subject group analysis and cross-subject learning
+- Comparison with deep learning approaches (autoencoders, RNNs)
+- Adaptive regularization parameter tuning based on signal characteristics
+- Extension to high-density electrode arrays (256+ channels)
+- Integration with clinical decision-support systems
+- Development of open-source software toolbox
+
+---
+
 ## Mathematical Notation Reference
 
 | Symbol | Definition | Example |
 |--------|-----------|---------|
 | $\mathbb{R}^{n \times m}$ | Real matrix of dimension $n \times m$ | $X \in \mathbb{R}^{100 \times 1000}$ |
 | $\text{Tr}(\cdot)$ | Trace of matrix (sum of diagonal) | $\text{Tr}(L) = \sum_i L_{ii}$ |
-| $\|\cdot\|_F$ | Frobenius norm: $\sqrt{\sum_{i,j} A_{ij}^2}$ | $\|X\|_F = \sqrt{100}$ |
-| $\|\cdot\|_*$ | Nuclear norm (sum of singular values) | $\|X\|_* = \sum_i \sigma_i$ |
+| $\left\|A\right\|_F$ | Frobenius norm: $\sqrt{\sum_{i,j} A_{ij}^2}$ | $\|X\|_F = \sqrt{100}$ |
+| $\left\|X\right\|_*$ | Nuclear norm (sum of singular values) | $\|X\|_* = \sum_i \sigma_i$ |
 | $\odot$ | Hadamard (element-wise) product | $(A \odot B)_{ij} = A_{ij} B_{ij}$ |
 | $\otimes$ | Kronecker product | $A \otimes B$ is block matrix |
 | $^{\top}$ | Matrix transpose | $X^{\top}$ flips rows/columns |
@@ -536,3 +607,10 @@ We propose an **LGS-based method** for time-varying EEG reconstruction that:
 | $\nabla$ | Gradient operator | $\nabla_L f(L)$ is derivative w.r.t. $L$ |
 | $\text{vec}(\cdot)$ | Vectorization (stack columns) | $\text{vec}(X) \in \mathbb{R}^{nm}$ |
 
+---
+
+**Last Updated**: March 31, 2026
+
+**Repository**: [EEG-Reconstruction-With-ADMM](https://github.com/Mrudula-itsjuzme/EEG-Reconstruction-With-ADMM/)
+
+**Contact**: For questions, issues, or collaborations, please open an issue in the repository.
