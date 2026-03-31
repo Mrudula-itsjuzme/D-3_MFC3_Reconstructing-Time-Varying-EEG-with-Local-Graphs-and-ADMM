@@ -37,19 +37,24 @@ EEG recordings are contaminated by noise (electromyographic interference, moveme
 
 ### Signal Model
 
-```
-Y = J ⊙ X* + V
-```
+The incomplete EEG signals captured by electrodes are modeled as:
 
-- **Y**: Observed signal | **J**: Sampling operator | **X***: True signal | **V**: Noise
+$$Y = J \odot X^* + V$$
+
+Where:
+- **Y**: Observed noisy/incomplete signal
+- **J**: Sampling operator (binary mask)
+- **X\***: True underlying signal
+- **V**: Additive Gaussian noise
+- **⊙**: Hadamard (element-wise) product
 
 ### Brain Regions
 
-- **Frontal** (X_F): Motor & cognitive
-- **Parietal** (X_P): Sensory processing
-- **Temporal** (X_T): Auditory & memory
-- **Occipital** (X_O): Visual processing
-- **Central** (X_C): Motor & sensory coordination
+- **Frontal** ($X_F$): Motor & cognitive
+- **Parietal** ($X_P$): Sensory processing
+- **Temporal** ($X_T$): Auditory & memory
+- **Occipital** ($X_O$): Visual processing
+- **Central** ($X_C$): Motor & sensory coordination
 
 ---
 
@@ -57,57 +62,76 @@ Y = J ⊙ X* + V
 
 ### Graph Representation
 
-```
-G = (V, E, W)
-```
+An undirected, connected, weighted graph:
 
+$$G = (V, E, W)$$
+
+Where:
 - **V**: Vertices (N electrodes)
 - **E**: Edges between electrodes
-- **W**: Adjacency matrix (edge weights)
+- **W** ∈ ℝ^(N×N): Adjacency matrix
 
 ### Graph Laplacian
 
-```
-L := diag(W1) - W
-```
+The combinatorial graph Laplacian:
+
+$$L := \text{diag}(W\mathbf{1}) - W$$
+
+Where **1** is the all-ones vector.
 
 ### Signal Smoothness
 
-```
-f(X) = Tr[(XD)^⊤ L (XD)]
-```
+The smoothness of time-varying graph signals:
 
-Where D is the temporal difference operator.
+$$f(X) = \text{Tr}\left[(XD)^{\top} L (XD)\right]$$
+
+Where **D** is the temporal difference operator:
+
+$$D = \begin{bmatrix} 1 & 0 & 0 & \cdots & 0 \\ -1 & 1 & 0 & \cdots & 0 \\ 0 & -1 & 1 & \cdots & 0 \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ 0 & \cdots & 0 & -1 & 1 \\ 0 & \cdots & 0 & 0 & -1 \end{bmatrix}_{T \times (T-1)}$$
+
+This smoothness term penalizes large differences between connected nodes.
 
 ### Local Graph Signal Smoothness
 
-For each region k:
+For each region $k$, learn the graph Laplacian $L_k$:
 
-```
-min Tr(Z_k L_k Z_k^⊤) + α||L_k||_F^2,  s.t. Tr(L_k) = N_k
-```
+$$\min_{L_k \in \mathcal{L}} \text{Tr}(Z_k L_k Z_k^{\top}) + \alpha\|L_k\|_F^2, \quad \text{s.t.} \quad \text{Tr}(L_k) = N_k$$
+
+Where:
+- $Z_k = X_k D \in \mathbb{R}^{N_k \times T}$: Normalized signal matrix
+- $\alpha > 0$: Regularization parameter
+- $\mathcal{L}$: Set of valid Laplacian matrices
 
 ### Joint Optimization
 
-```
-min Tr(Z_k L_k Z_k^⊤) + α||L_k||_F^2 + β||X̃_k||_* + γ||JX̃_k - X||_F^2
-s.t. Tr(L_k) = N_k
-```
+Jointly reconstruct EEG signal $\tilde{X}_k$ and learn Laplacian $L_k$:
+
+$$\min_{X_k, L_k} \text{Tr}(Z_k L_k Z_k^{\top}) + \alpha\|L_k\|_F^2 + \beta\|\tilde{X}_k\|_* + \gamma\|J \odot \tilde{X}_k - X_k\|_F^2$$
+$$\text{s.t.} \quad \text{Tr}(L_k) = N_k$$
 
 **Terms:**
-- **Tr(Z_k^⊤ L_k Z_k)**: Graph smoothness
-- **α||L_k||_F^2**: Frobenius regularization
-- **β||X̃_k||_***: Nuclear norm (low-rank)
-- **γ||JX̃_k - X||_F^2**: Data fidelity
+- $\text{Tr}(Z_k^{\top} L_k Z_k)$: Graph smoothness
+- $\alpha\|L_k\|_F^2$: Frobenius regularization
+- $\beta\|\tilde{X}_k\|_*$: Nuclear norm (promotes low-rank)
+- $\gamma\|J \odot \tilde{X}_k - X_k\|_F^2$: Data fidelity
 
 ### ADMM Algorithm
 
-Alternates between:
-1. **L_k-Subproblem**: Update graph Laplacian
-2. **X_k-Subproblem**: Update reconstructed signals
+Since the problem is **non-convex** in both $L_k$ and $\tilde{X}_k$, we use ADMM:
+
+1. **L_k-Subproblem**: Update graph Laplacian (fixed $\tilde{X}_k$)
+
+   $$L_k^{(c+1)} = \arg\min_{L_k \in \mathcal{L}} m(L_k) + \text{augmented\_lagrangian}$$
+
+2. **X_k-Subproblem**: Update reconstructed signals (fixed $L_k$)
+
+   $$\tilde{X}_k^{(c+1)} = \arg\min_{\tilde{X}_k} \beta\|\tilde{X}_k\|_* + \gamma\|J \odot \tilde{X}_k - X_k\|_F^2 + \text{augmented\_lagrangian}$$
+
 3. **Multiplier Update**: Enforce constraints
 
-Vectorizes only upper-triangular and diagonal elements for efficiency.
+   $$\lambda^{(c+1)} = \lambda^{(c)} + \rho \cdot \text{residual}$$
+
+Vectorizes only upper-triangular and diagonal elements for computational efficiency.
 
 ---
 
@@ -117,7 +141,7 @@ Vectorizes only upper-triangular and diagonal elements for efficiency.
 
 ![EEG Reconstruction](images/1.jpg)
 
-**Figure 2**: Signal reconstruction at 40% data corruption
+**Figure 2**: Signal reconstruction at 40% data corruption. Blue: Original, Red: Reconstructed, Green: Noisy observation.
 
 ### Performance Metrics
 
@@ -163,11 +187,15 @@ Vectorizes only upper-triangular and diagonal elements for efficiency.
 
 ## Key Findings
 
-✓ ~65% error reduction vs. baseline  
-✓ Stable performance at 90% missing data  
-✓ SNR of 9.34 dB at extreme data loss  
-✓ Data-driven graph learning captures brain organization  
-✓ Joint optimization outperforms fixed graphs  
+✓ ~65% error reduction vs. baseline
+
+✓ Stable performance at 90% missing data
+
+✓ SNR of 9.34 dB at extreme data loss
+
+✓ Data-driven graph learning captures brain organization
+
+✓ Joint optimization outperforms fixed graphs
 
 ---
 
@@ -175,11 +203,16 @@ Vectorizes only upper-triangular and diagonal elements for efficiency.
 
 We propose an LGS-based method for time-varying EEG reconstruction leveraging local graph smoothness across functional brain regions. The joint graph learning and signal reconstruction framework, solved via ADMM, outperforms existing benchmarks with superior accuracy and robustness.
 
+**The optimization problem alternates between:**
+- Updating graph Laplacian matrices $(L_k)$
+- Reconstructing EEG signals $(\tilde{X}_k)$
+- Updating Lagrange multipliers for constraint enforcement
+
 **Advantages:**
 - Anatomically motivated regional decomposition
 - Simultaneous graph learning and reconstruction
-- Robust to extreme data loss
-- Computationally efficient
+- Robust to extreme data loss (90% missing)
+- Computationally efficient via ADMM
 - Interpretable results
 
 ---
@@ -187,10 +220,23 @@ We propose an LGS-based method for time-varying EEG reconstruction leveraging lo
 ## Applications
 
 - Medical diagnostics (epilepsy, sleep disorders)
-- Brain-computer interfaces
+- Brain-computer interfaces (BCIs)
 - Neuroscience research
 - Clinical decision-making
 - Artifact removal
+
+---
+
+## Mathematical Notation
+
+| Symbol | Meaning |
+|--------|---------|
+| $\mathbb{R}^{n \times m}$ | Real matrix of dimension $n \times m$ |
+| $\text{Tr}(\cdot)$ | Trace of a matrix |
+| $\|\cdot\|_F$ | Frobenius norm |
+| $\|\cdot\|_*$ | Nuclear norm |
+| $\odot$ | Hadamard (element-wise) product |
+| $\top$ | Matrix transpose |
 
 ---
 
@@ -207,5 +253,6 @@ We propose an LGS-based method for time-varying EEG reconstruction leveraging lo
 
 Academic research at Amrita Vishwa Vidyapeetham
 
-**Last Updated**: March 31, 2025  
+**Last Updated**: March 31, 2025
+
 **Repository**: [EEG-Reconstruction-With-ADMM](https://github.com/Mrudula-itsjuzme/EEG-Reconstruction-With-ADMM)
