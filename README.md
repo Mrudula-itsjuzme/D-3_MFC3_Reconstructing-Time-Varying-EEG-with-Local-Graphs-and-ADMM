@@ -31,7 +31,7 @@ EEG recordings are contaminated by noise (electromyographic interference, moveme
 
 ## System Overview
 
-![System Architecture](Figure1.png)
+![System Architecture](images/Figure1.png)
 
 **Figure 1**: LSG-based method pipeline
 
@@ -115,7 +115,7 @@ Vectorizes only upper-triangular and diagonal elements for efficiency.
 
 ### High-Fidelity Reconstruction
 
-![EEG Reconstruction](1.jpg)
+![EEG Reconstruction](images/1.jpg)
 
 **Figure 2**: Signal reconstruction at 40% data corruption
 
@@ -140,7 +140,7 @@ Vectorizes only upper-triangular and diagonal elements for efficiency.
 
 ### Validation Comparison
 
-![Validation](3.jpg)
+![Validation](images/3.jpg)
 
 **Figure 3**: ADMM vs. Baseline (Zero-Filling)
 
@@ -150,7 +150,7 @@ Vectorizes only upper-triangular and diagonal elements for efficiency.
 
 ### Learned Graph Topology
 
-![Graph Matrices](2.jpg)
+![Graph Matrices](images/2.jpg)
 
 **Figure 4**: Learned adjacency matrices for five brain regions
 
