@@ -1,6 +1,7 @@
-# Reconstructing Time-Varying EEG with Local Graphs and ADMM
 
 ![Amrita Vishwa Vidyapeetham](images/amr.jpeg)
+
+# Reconstructing Time-Varying EEG with Local Graphs and ADMM
 
 [![Course](https://img.shields.io/badge/Course-22MAT220-blue)](.)
 [![Institution](https://img.shields.io/badge/Amrita%20Vishwa%20Vidyapeetham-AI-green)](.)
