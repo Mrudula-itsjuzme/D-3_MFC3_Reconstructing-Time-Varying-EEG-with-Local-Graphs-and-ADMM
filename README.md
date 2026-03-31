@@ -18,14 +18,15 @@
 
 ## Table of Contents
 
-1. [Abstract](#abstract)
-2. [Introduction](#introduction)
-3. [System Overview](#system-overview)
-4. [Detailed Methodology](#detailed-methodology)
-5. [Results & Analysis](#results--analysis)
-6. [Key Contributions](#key-contributions)
-7. [Applications](#applications)
-8. [Conclusion](#conclusion)
+1. [TL;DR](#tldr-too-long-didnt-read)
+2. [Abstract](#abstract)
+3. [Introduction](#introduction)
+4. [System Overview](#system-overview)
+5. [Detailed Methodology](#detailed-methodology)
+6. [Results & Analysis](#results--analysis)
+7. [Key Contributions](#key-contributions)
+8. [Applications](#applications)
+9. [Conclusion](#conclusion)
 
 ---
 
@@ -40,6 +41,27 @@ We introduce LGS to model relationships across distinct functional brain regions
 - **SNR of 9.34 dB at 90% missing data** (extreme data loss scenario)
 - **RMSE between 0.34-0.36** across all missing data percentages (10%-90%)
 - **Anatomically plausible learned graphs** reflecting brain organization
+
+---
+
+## TL;DR (Too Long; Didn't Read) ⚡
+
+**The Problem:**
+Brain signals (EEG) are often incomplete and noisy. Hospitals need reliable reconstruction to diagnose conditions.
+
+**Our Solution:**
+We use graphs to model how brain regions connect, then reconstruct missing data while learning the actual brain connectivity pattern.
+
+**The Results:**
+- Works 65% better than naive methods
+- Stays stable even when 90% of data is missing
+- Reconstructs signals so accurately they look like the real thing
+
+**How it works:**
+1. Assume nearby brain regions behave similarly (graph smoothness)
+2. Assume noise is random but true signal is structured (low-rank)
+3. Learn both the graph AND the signal simultaneously using ADMM
+4. Done!
 
 ---
 
@@ -170,6 +192,10 @@ This regional organization enables region-specific graph learning with improved 
 
 #### 1. Graph Representation
 
+**What we're building:**
+
+We represent brain electrode connections as a mathematical graph. Think of it as a social network—but for brain signals.
+
 An undirected, connected, weighted graph for region $k$:
 
 $$G_k = (V_k, E_k, W_k)$$
@@ -185,6 +211,10 @@ $$G_k = (V_k, E_k, W_k)$$
 - Non-negative: All entries are non-negative
 
 #### 2. Graph Laplacian
+
+**Why the Laplacian?**
+
+The Laplacian is a special matrix that captures graph structure in a way that's perfect for signal processing. It tells us how signals should propagate across the network.
 
 The combinatorial graph Laplacian for region $k$:
 
@@ -247,6 +277,10 @@ Element $i$ of $XD$ represents $x(t+1) - x(t)$ (temporal gradient).
 
 #### 4. Local Graph Learning Problem
 
+**What we're doing here:**
+
+We want to find a graph structure that explains the observed signal patterns. In other words: "What connections between electrodes best explain the EEG data we see?"
+
 For each region $k$, learn the optimal graph Laplacian $L_k$ that explains the observed signal patterns:
 
 $$\min_{L_k \in \mathcal{L}} \text{Tr}(Z_k L_k Z_k^{\top}) + \alpha\|L_k\|_F^2 \quad \text{s.t.} \quad \text{Tr}(L_k) = N_k$$
@@ -268,6 +302,15 @@ $$\min_{L_k \in \mathcal{L}} \text{Tr}(Z_k L_k Z_k^{\top}) + \alpha\|L_k\|_F^2 \
 - Positive semi-definiteness: All eigenvalues ≥ 0
 
 #### 5. Joint Optimization Problem
+
+**In simple terms, we're trying to balance 4 things:**
+
+1. **Smooth signals** → Connected electrodes should behave similarly
+2. **Simple graph** → Don't learn unnecessary connections (avoid overfitting)
+3. **Low noise** → Separate true signal from noise
+4. **Match observations** → Stick to what we actually measured
+
+Here's how we formalize this balancing act:
 
 Simultaneously reconstruct EEG signal $\tilde{X}_k$ and learn Laplacian $L_k$ for each region:
 
@@ -383,6 +426,10 @@ $$\Lambda_2^{(c)} = \Lambda_2^{(c-1)} + \rho_2(\tilde{X}_k^{(c)} - \tilde{X}_k^{
 Dual variables track constraint violations and guide convergence.
 
 **4. Convergence Criteria**
+
+**How do we know we're done?**
+
+We stop iterating when the solution stabilizes (stops changing meaningfully):
 
 Stop iterations when:
 
