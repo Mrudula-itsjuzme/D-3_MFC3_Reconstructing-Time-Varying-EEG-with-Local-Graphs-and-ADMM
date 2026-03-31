@@ -28,9 +28,10 @@
 7. [System Overview](#system-overview)
 8. [Detailed Methodology](#detailed-methodology)
 9. [Results & Analysis](#results--analysis)
-10. [Key Contributions](#key-contributions)
-11. [Dataset](#dataset)
-12. [Conclusion](#conclusion)
+10. [Summary Results](#summary-results)
+11. [Key Contributions](#key-contributions)
+12. [Dataset](#dataset)
+13. [Conclusion](#conclusion)
 
 ---
 
@@ -40,8 +41,8 @@ Get up and running in 5 minutes:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/Mrudula-itsjuzme/EEG-Reconstruction-With-ADMM.git
-cd EEG-Reconstruction-With-ADMM
+git clone https://github.com/Mrudula-itsjuzme/D-3_MFC3_Reconstructing-Time-Varying-EEG-with-Local-Graphs-and-ADMM.git
+cd D-3_MFC3_Reconstructing-Time-Varying-EEG-with-Local-Graphs-and-ADMM
 
 # 2. Install dependencies
 pip install -r requirements.txt
@@ -149,16 +150,13 @@ EEG-Reconstruction-With-ADMM/
 ├── V2.py                          # Simplified ADMM version (research)
 ├── requirements.txt               # Python dependencies
 ├── README.md                       # This file
-├── images/
-│   ├── amr.jpeg                   # Amrita Vishwa Vidyapeetham logo
-│   ├── Figure1.png                # System architecture pipeline
-│   ├── 1.jpg                      # Reconstruction results at 40% missing
-│   ├── 2.jpg                      # Learned adjacency matrices
-│   └── 3.jpg                      # ADMM vs baseline comparison
-└── MFC_S3/                        # Original project data
-    ├── 1.csv                      # EEG signal samples
-    ├── maths.slx                  # Simulink model
-    └── *.pdf                      # Research papers
+└── images/
+    ├── amr.jpeg                   # Amrita Vishwa Vidyapeetham logo
+    ├── Figure1.png                # System architecture pipeline
+    ├── 1.jpg                      # Reconstruction results at 40% missing
+    ├── 2.jpg                      # Learned adjacency matrices
+    ├── 3.jpg                      # ADMM vs baseline comparison
+    └── results.png                # Summary results visualization
 ```
 
 **File descriptions:**
@@ -640,6 +638,19 @@ This is particularly important clinically: if sensors fail or signals drop out, 
 
 ---
 
+## Summary Results
+
+![Summary Results Visualization](images/results.png)
+
+**Figure 5: Comprehensive Results Summary**
+
+This figure provides a high-level overview of the research outcomes, including:
+- Performance metrics across all data loss scenarios
+- Visual comparison of reconstruction quality
+- Key statistics demonstrating robustness and efficiency
+
+---
+
 ## Quantitative Results
 
 **Performance Metrics (Table 1):**
@@ -719,7 +730,7 @@ This project uses the **EEG-128channels ERP dataset from Lanzhou** (Lanzhou data
 - **Subjects**: Multiple participants with event-related potential (ERP) recordings
 
 **Where to Access:**
-The dataset is available on [PhysioNet](https://physionet.org/) - a large, freely accessible collection of biomedical datasets including numerous EEG studies. PhysioNet is maintained by MIT and is the standard repository for open-source physiological signals used in research.
+The dataset is available on [PhysioNet: EEG-128 Channels ERP from Lanzhou](https://physionet.org/content/eeg-128-channels-erp-lanzhou/1.0.0/) - a freely accessible collection of biomedical datasets maintained by MIT. The Lanzhou EEG dataset is part of PhysioNet's public repository of neurophysiological signals.
 
 **Understanding the Dataset Structure:**
 
