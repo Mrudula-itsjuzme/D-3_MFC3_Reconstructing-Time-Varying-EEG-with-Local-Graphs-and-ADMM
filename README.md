@@ -510,38 +510,6 @@ Typical convergence: 50-200 iterations
 
 ---
 
-## Applications
-
-### Medical & Clinical
-
-**Diagnostic Applications:**
-- **Epilepsy Detection**: Reconstruct corrupted ictal/interictal recordings for accurate diagnosis
-- **Sleep Stage Classification**: Improve sleep study analysis with reconstructed signals
-- **Neurological Disorder Assessment**: Better detection of abnormal EEG patterns in:
-  - Stroke patients
-  - Traumatic brain injury (TBI)
-  - Dementia and Alzheimer's disease
-  - Brain tumors
-
-**Clinical Monitoring:**
-- **ICU Monitoring**: Continuous patient assessment despite electrode loss or artifact
-- **Perioperative Monitoring**: Enhanced signal quality during anesthesia
-- **Ambulatory EEG**: Improve reliability of home-based monitoring systems
-
-### Research Applications
-
-- **Brain Connectivity Studies**: Improved fidelity for functional/structural connectivity analysis
-- **Neuroscience Research**: Better understanding of brain oscillations and neural synchronization
-- **Clinical Trials**: More reliable EEG endpoints in pharmaceutical research
-
-### Engineering Applications
-
-- **Brain-Computer Interfaces (BCIs)**: Enhanced signal quality for improved control
-- **Seizure Prediction**: Better feature extraction from reconstructed signals
-- **Artifact Removal**: Selective artifact suppression while preserving neural activity
-
----
-
 ## Conclusion
 
 ### Summary
@@ -552,35 +520,6 @@ We propose an **LGS-based method** for time-varying EEG reconstruction that:
 2. **Enables Joint Learning**: Simultaneously learns graph topology and reconstructs signals
 3. **Uses Efficient ADMM**: Handles non-convex optimization with practical convergence
 4. **Achieves Superior Results**: ~65% error reduction with robust performance at extreme data loss
-
-### Key Advantages
-
-✅ **Anatomically Motivated**: Respects functional brain organization and neural correlations
-
-✅ **Simultaneous Optimization**: Graph learning dramatically improves reconstruction
-
-✅ **Extreme Robustness**: Maintains 9.34 dB SNR even with 90% missing data
-
-✅ **Computationally Efficient**: ADMM convergence enables practical implementation
-
-✅ **Interpretable Results**: Learned graphs provide neuroscience insights and clinical context
-
-✅ **Clinically Relevant**: Directly applicable to real EEG systems and diagnostic workflows
-
-✅ **Data-Driven**: No manual parameter tuning; learning from data itself
-
-### Future Research Directions
-
-- Clinical validation on diverse patient populations and pathologies
-- Real-time implementation for clinical decision support systems
-- Multi-subject group analysis and cross-subject learning
-- Comparison with deep learning approaches (autoencoders, RNNs)
-- Adaptive regularization parameter tuning based on signal characteristics
-- Extension to high-density electrode arrays (256+ channels)
-- Integration with clinical decision-support systems
-- Development of open-source software toolbox
-
----
 
 ## Mathematical Notation Reference
 
@@ -597,10 +536,3 @@ We propose an **LGS-based method** for time-varying EEG reconstruction that:
 | $\nabla$ | Gradient operator | $\nabla_L f(L)$ is derivative w.r.t. $L$ |
 | $\text{vec}(\cdot)$ | Vectorization (stack columns) | $\text{vec}(X) \in \mathbb{R}^{nm}$ |
 
----
-
-**Last Updated**: March 31, 2026
-
-**Repository**: [EEG-Reconstruction-With-ADMM](https://github.com/Mrudula-itsjuzme/EEG-Reconstruction-With-ADMM/)
-
-**Contact**: For questions, issues, or collaborations, please open an issue in the repository.
